@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revocatus Benedicto — Biomedical Sales &amp; AI Systems</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-void:#0B121C;
+    --bg-panel:#121B27;
+    --bg-panel-2:#0F1822;
+    --accent-amber:#F2A93B;
+    --accent-cyan:#5FC9DC;
+    --text-primary:#E7ECF2;
+    --text-muted:#7C8798;
+    --border-line:#233040;
+    --border-line-soft:#1A2530;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg-void);
+    color:var(--text-primary);
+    font-family:'IBM Plex Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--accent-amber);color:#0B121C;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
+  }
+
+  a{color:inherit;}
+  .mono{font-family:'IBM Plex Mono', monospace;}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--accent-cyan);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:6px;height:6px;
+    background:var(--accent-cyan);
+    border-radius:50%;
+    box-shadow:0 0 8px var(--accent-cyan);
+  }
+
+  .wrap{
+    max-width:1080px;
+    margin:0 auto;
+    padding:0 32px;
+  }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(11,18,28,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border-line-soft);
+  }
+  .nav-inner{
+    max-width:1080px;
+    margin:0 auto;
+    padding:16px 32px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .nav-brand{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:15px;
+    letter-spacing:0.01em;
+  }
+  .nav-brand span{color:var(--accent-amber);}
+  .nav-links{
+    display:flex;
+    gap:28px;
+    list-style:none;
+    margin:0;padding:0;
+  }
+  .nav-links a{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    text-decoration:none;
+    color:var(--text-muted);
+    transition:color .2s ease;
+  }
+  .nav-links a:hover, .nav-links a:focus-visible{color:var(--accent-cyan);}
+  .nav-cta{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    text-decoration:none;
+    color:var(--bg-void);
+    background:var(--accent-amber);
+    padding:8px 14px;
+    border-radius:2px;
+    letter-spacing:0.04em;
+  }
+  @media (max-width:760px){ .nav-links{display:none;} }
+
+  /* ---------- HERO ---------- */
+  header.hero{
+    padding:96px 0 64px;
+    position:relative;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:56px;
+    align-items:center;
+  }
+  @media (max-width:860px){ .hero-grid{grid-template-columns:1fr; gap:40px;} }
+
+  /* Profile photo identity */
+  .profile-id{
+    display:flex; align-items:center; gap:14px;
+    margin-bottom:22px;
+  }
+  .avatar-frame{
+    position:relative;
+    width:72px; height:72px;
+    border:1px solid var(--border-line);
+    border-radius:6px;
+    overflow:hidden;
+    flex-shrink:0;
+    background:var(--bg-panel);
+  }
+  .avatar-frame::before, .avatar-frame::after{
+    content:""; position:absolute; width:10px; height:10px; z-index:2;
+  }
+  .avatar-frame::before{ top:-1px; left:-1px; border-top:2px solid var(--accent-cyan); border-left:2px solid var(--accent-cyan); }
+  .avatar-frame::after{ bottom:-1px; right:-1px; border-bottom:2px solid var(--accent-cyan); border-right:2px solid var(--accent-cyan); }
+  .avatar-frame img{
+    width:100%; height:100%; object-fit:cover; display:block;
+  }
+  .avatar-fallback{
+    width:100%; height:100%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:22px;
+    color:var(--accent-cyan);
+    background:var(--bg-panel-2);
+  }
+  .profile-id-name{
+    font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:16px;
+  }
+  .profile-id-role{
+    font-family:'IBM Plex Mono', monospace; font-size:10.5px;
+    color:var(--text-muted); letter-spacing:0.06em; text-transform:uppercase;
+    margin-top:5px;
+  }
+
+  .hero h1{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:clamp(34px,5vw,54px);
+    line-height:1.05;
+    margin:18px 0 20px;
+    letter-spacing:-0.01em;
+  }
+  .hero h1 .accent{color:var(--accent-amber);}
+  .hero p.lede{
+    font-size:16.5px;
+    line-height:1.65;
+    color:var(--text-muted);
+    max-width:46ch;
+    margin:0 0 28px;
+  }
+  .hero-actions{display:flex; gap:14px; flex-wrap:wrap;}
+  .btn-primary{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    text-decoration:none;
+    background:var(--accent-amber);
+    color:#0B121C;
+    padding:12px 20px;
+    border-radius:2px;
+    letter-spacing:0.03em;
+    font-weight:500;
+  }
+  .btn-ghost{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    text-decoration:none;
+    border:1px solid var(--border-line);
+    color:var(--text-primary);
+    padding:11px 20px;
+    border-radius:2px;
+    letter-spacing:0.03em;
+  }
+  .btn-ghost:hover{border-color:var(--accent-cyan); color:var(--accent-cyan);}
+
+  /* Signature waveform panel */
+  .scope{
+    position:relative;
+    background:var(--bg-panel);
+    border:1px solid var(--border-line);
+    border-radius:4px;
+    padding:22px 20px 18px;
+  }
+  .scope::before, .scope::after,
+  .scope .corner-tl, .scope .corner-br{
+    content:"";
+    position:absolute;
+    width:14px;height:14px;
+    border-color:var(--accent-cyan);
+  }
+  .scope::before{ top:-1px; left:-1px; border-top:2px solid var(--accent-cyan); border-left:2px solid var(--accent-cyan);}
+  .scope::after{ bottom:-1px; right:-1px; border-bottom:2px solid var(--accent-cyan); border-right:2px solid var(--accent-cyan);}
+  .scope-label{
+    display:flex; justify-content:space-between; align-items:center;
+    margin-bottom:10px;
+  }
+  .scope-label .mono{font-size:11px; color:var(--text-muted); letter-spacing:0.08em;}
+  .scope-title{font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--accent-cyan); letter-spacing:0.1em;}
+  .scope svg{width:100%; height:auto; display:block;}
+  .scope-readout{
+    display:flex; justify-content:space-between;
+    margin-top:12px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--text-muted);
+  }
+  .scope-readout b{color:var(--accent-amber); font-weight:500;}
+
+  #wavePath{
+    stroke-dasharray:1400;
+    stroke-dashoffset:1400;
+    animation:draw 2.6s ease-out forwards;
+  }
+  @keyframes draw{ to{ stroke-dashoffset:0; } }
+  #waveDot{
+    offset-path:path(var(--dot-path));
+    animation:none;
+  }
+
+  /* ---------- SECTION SHELL ---------- */
+  section{padding:72px 0;}
+  .section-head{
+    display:flex; align-items:baseline; justify-content:space-between;
+    margin-bottom:34px; gap:20px; flex-wrap:wrap;
+    border-bottom:1px solid var(--border-line-soft);
+    padding-bottom:16px;
+  }
+  .section-head h2{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:26px; font-weight:700; margin:0;
+  }
+  .section-tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px; color:var(--text-muted); letter-spacing:0.08em;
+  }
+
+  /* ---------- ABOUT ---------- */
+  .about-body{
+    font-size:16px; line-height:1.75; color:var(--text-muted);
+    max-width:74ch;
+  }
+  .about-body strong{color:var(--text-primary); font-weight:600;}
+  .stat-row{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+    background:var(--border-line-soft);
+    border:1px solid var(--border-line-soft);
+    margin-top:36px;
+  }
+  .stat{
+    background:var(--bg-panel);
+    padding:22px 20px;
+  }
+  .stat .num{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:30px; font-weight:700; color:var(--accent-amber);
+  }
+  .stat .lbl{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px; color:var(--text-muted); letter-spacing:0.06em;
+    margin-top:6px;
+  }
+  @media (max-width:640px){ .stat-row{grid-template-columns:1fr;} }
+
+  /* ---------- EXPERIENCE ---------- */
+  .timeline{border-left:1px solid var(--border-line); margin-left:6px;}
+  .tl-item{
+    position:relative;
+    padding:0 0 40px 32px;
+  }
+  .tl-item:last-child{padding-bottom:0;}
+  .tl-item::before{
+    content:"";
+    position:absolute; left:-5.5px; top:4px;
+    width:10px;height:10px; border-radius:50%;
+    background:var(--bg-void);
+    border:2px solid var(--accent-cyan);
+  }
+  .tl-role{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:19px; font-weight:600;
+  }
+  .tl-meta{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px; color:var(--accent-cyan);
+    margin:5px 0 12px;
+    letter-spacing:0.03em;
+  }
+  .tl-list{margin:0; padding-left:18px; color:var(--text-muted); font-size:14.5px; line-height:1.7;}
+  .tl-list li{margin-bottom:4px;}
+
+  /* ---------- SKILLS ---------- */
+  .panel-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+    background:var(--border-line-soft); border:1px solid var(--border-line-soft);
+  }
+  @media (max-width:820px){ .panel-grid{grid-template-columns:1fr;} }
+  .panel{
+    background:var(--bg-panel);
+    padding:26px 24px;
+    box-shadow:0 12px 24px -18px rgba(0,0,0,0.55);
+  }
+  .panel-code{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px; color:var(--accent-amber); letter-spacing:0.08em;
+    margin-bottom:10px; display:block;
+  }
+  .panel h3{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:17px; margin:0 0 14px;
+  }
+  .panel ul{margin:0; padding:0; list-style:none;}
+  .panel li{
+    font-size:13.5px; color:var(--text-muted);
+    padding:7px 0; border-top:1px dashed var(--border-line-soft);
+  }
+  .panel li:first-child{border-top:none;}
+
+  /* ---------- PROJECTS ---------- */
+  .project-card{
+    border:1px solid var(--border-line);
+    border-radius:4px;
+    padding:28px;
+    background:linear-gradient(180deg, rgba(95,201,220,0.03), transparent 40%);
+    margin-bottom:20px;
+    box-shadow:0 16px 30px -20px rgba(0,0,0,0.6);
+  }
+  .project-card.flagship{
+    border-color:var(--accent-amber);
+    background:linear-gradient(180deg, rgba(242,169,59,0.05), transparent 45%);
+  }
+  .flagship-badge{
+    font-family:'IBM Plex Mono', monospace; font-size:10px;
+    color:var(--accent-amber); border:1px solid var(--accent-amber);
+    padding:3px 8px; border-radius:20px; letter-spacing:0.06em;
+    margin-bottom:10px; display:inline-block;
+  }
+  .project-stats{
+    display:flex; gap:32px; flex-wrap:wrap;
+    margin:18px 0 6px;
+    padding:16px 0;
+    border-top:1px dashed var(--border-line-soft);
+    border-bottom:1px dashed var(--border-line-soft);
+  }
+  .project-stats div{display:flex; flex-direction:column;}
+  .project-stats .n{
+    font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:22px; color:var(--accent-amber);
+  }
+  .project-stats .l{
+    font-family:'IBM Plex Mono', monospace; font-size:10px; color:var(--text-muted);
+    letter-spacing:0.05em; text-transform:uppercase; margin-top:3px;
+  }
+  .project-head{
+    display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap;
+    margin-bottom:14px;
+  }
+  .project-head h3{
+    font-family:'Space Grotesk', sans-serif; font-size:20px; margin:0 0 6px;
+  }
+  .project-head .mono{font-size:11.5px; color:var(--text-muted);}
+  .tag-row{display:flex; gap:8px; flex-wrap:wrap;}
+  .tag{
+    font-family:'IBM Plex Mono', monospace; font-size:10.5px;
+    color:var(--accent-cyan); border:1px solid var(--border-line);
+    padding:4px 9px; border-radius:20px; letter-spacing:0.03em;
+  }
+  .project-card p{color:var(--text-muted); font-size:14.5px; line-height:1.7; max-width:70ch;}
+  .project-mods{
+    display:flex; gap:22px; margin-top:16px; flex-wrap:wrap;
+  }
+  .project-mods span{
+    font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--text-muted);
+  }
+  .project-mods b{color:var(--accent-amber); font-weight:500;}
+
+  /* ---------- EDU ---------- */
+  .edu-row{
+    display:flex; justify-content:space-between; align-items:baseline;
+    padding:16px 0; border-top:1px solid var(--border-line-soft);
+    flex-wrap:wrap; gap:6px;
+  }
+  .edu-row:last-child{border-bottom:1px solid var(--border-line-soft);}
+  .edu-name{font-weight:600; font-size:15px;}
+  .edu-inst{color:var(--text-muted); font-size:13.5px;}
+  .edu-year{font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--accent-cyan);}
+
+  /* ---------- CONTACT / FOOTER ---------- */
+  footer{
+    border-top:1px solid var(--border-line-soft);
+    padding:64px 0 40px;
+  }
+  .contact-panel{
+    background:var(--bg-panel);
+    border:1px solid var(--border-line);
+    border-radius:4px;
+    padding:44px 40px;
+    text-align:center;
+  }
+  .contact-panel h2{
+    font-family:'Space Grotesk', sans-serif; font-size:30px; margin:0 0 14px;
+  }
+  .contact-panel p{color:var(--text-muted); margin:0 0 26px; font-size:15px;}
+  .contact-actions{display:flex; justify-content:center; gap:14px; flex-wrap:wrap;}
+  .foot-meta{
+    display:flex; justify-content:space-between; margin-top:40px; flex-wrap:wrap; gap:10px;
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--text-muted);
+  }
+  .foot-meta a{text-decoration:none; color:var(--text-muted);}
+  .foot-meta a:hover{color:var(--accent-cyan);}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-brand">REV<span>.</span>BENEDICTO</div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#builds">Builds</a></li>
+      <li><a href="#education">Education</a></li>
+    </ul>
+    <a class="nav-cta" href="#contact">Contact</a>
+  </div>
+</nav>
+
+<header class="hero wrap">
+  <div class="hero-grid">
+    <div>
+      <div class="profile-id">
+        <div class="avatar-frame">
+          <!-- Replace the src below with the path to your photo, e.g. "rev-photo.jpg" -->
+          <img src="your-photo.jpg" alt="Revocatus Benedicto"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="avatar-fallback" style="display:flex;">RB</div>
+        </div>
+        <div>
+          <div class="profile-id-name">Revocatus Benedicto</div>
+          <div class="profile-id-role">Sales Manager · Web Developer</div>
+        </div>
+      </div>
+      <div class="eyebrow">SALES · DAR ES SALAAM, TANZANIA</div>
+      <h1>Sells biomedical<br>equipment. Builds the<br><span class="accent">systems</span> to sell it faster.</h1>
+      <p class="lede">Revocatus Benedicto is a Sales Manager in Tanzania's biomedical equipment market — and a self-taught web developer who builds the platforms and AI tools most reps only use. Two years closing deals, one full business management platform and one AI agent shipped from scratch.</p>
+      <div class="hero-actions">
+        <a class="btn-primary" href="#builds">See what I've built</a>
+        <a class="btn-ghost" href="#contact">Get in touch</a>
+      </div>
+    </div>
+
+    <div class="scope">
+      <div class="scope-label">
+        <span class="scope-title">SIGNAL.MONITOR</span>
+        <span class="mono">LIVE</span>
+      </div>
+      <svg viewBox="0 0 460 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line x1="0" y1="45" x2="460" y2="45" stroke="#1A2530" stroke-width="1"/>
+        <line x1="0" y1="90" x2="460" y2="90" stroke="#1A2530" stroke-width="1"/>
+        <line x1="0" y1="135" x2="460" y2="135" stroke="#1A2530" stroke-width="1"/>
+        <path id="wavePath"
+          d="M0,120 L30,120 L45,120 L55,60 L65,150 L78,120 L110,120
+             L125,118 L140,60 L152,160 L165,118 L200,118
+             L215,116 L228,58 L240,164 L253,116 L290,114
+             C 320,100 330,80 360,58
+             C 385,40 400,30 420,20
+             L460,10"
+          stroke="var(--accent-cyan)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="scope-readout">
+        <span>CH.1 <b>PULSE</b></span>
+        <span>CH.2 <b>PIPELINE</b></span>
+        <span>TREND <b>▲ GROWTH</b></span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="about" class="wrap">
+  <div class="section-head">
+    <h2>About</h2>
+    <span class="section-tag mono">REV / PROFILE</span>
+  </div>
+  <p class="about-body">
+    <strong>Results-driven Sales Manager</strong> with two years leading sales operations, client accounts, and revenue growth in Tanzania's biomedical equipment sector. What sets Rev apart is the second track running alongside it: a self-taught engineering practice spent building the AI-powered infrastructure behind his own sales work — from deal tracking to client intelligence — rather than waiting on someone else's software to catch up.
+  </p>
+  <p class="about-body">
+    Trained originally as a <strong>biomedical engineer</strong>, Rev speaks the language of the equipment he sells and the language of the systems that run behind a modern sales desk — a rare combination in a market where most reps only ever operate the tools handed to them.
+  </p>
+  <div class="stat-row">
+    <div class="stat"><div class="num">2 yrs</div><div class="lbl mono">SALES LEADERSHIP</div></div>
+    <div class="stat"><div class="num">2</div><div class="lbl mono">PLATFORMS BUILT &amp; SHIPPED</div></div>
+    <div class="stat"><div class="num">326</div><div class="lbl mono">LEADS MANAGED LIVE</div></div>
+  </div>
+</section>
+
+<section id="experience" class="wrap">
+  <div class="section-head">
+    <h2>Experience</h2>
+    <span class="section-tag mono">REV / LOG</span>
+  </div>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-role">Sales Manager — Msemakweli Wellness</div>
+      <div class="tl-meta">DAR ES SALAAM · 2025 — PRESENT</div>
+      <ul class="tl-list">
+        <li>Manage daily sales operations and customer engagement activities</li>
+        <li>Identify new sales opportunities and generate qualified leads</li>
+        <li>Achieve and exceed monthly and quarterly sales targets</li>
+        <li>Prepare sales reports and performance analysis for leadership</li>
+        <li>Coordinate with marketing and support teams on sales performance</li>
+      </ul>
+    </div>
+    <div class="tl-item">
+      <div class="tl-role">Appointment Setter &amp; Customer Service Officer — Swahili Afya Fit</div>
+      <div class="tl-meta">DAR ES SALAAM · 2024</div>
+      <ul class="tl-list">
+        <li>Engaged customers and promoted products and services</li>
+        <li>Maintained customer records and updated CRM systems</li>
+        <li>Resolved customer issues professionally and supported team sales targets</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="skills" class="wrap">
+  <div class="section-head">
+    <h2>Skills</h2>
+    <span class="section-tag mono">REV / SPEC SHEET</span>
+  </div>
+  <div class="panel-grid">
+    <div class="panel">
+      <span class="panel-code">MOD.SALES</span>
+      <h3>Sales &amp; Business Development</h3>
+      <ul>
+        <li>Sales Management</li>
+        <li>CRM &amp; Account Management</li>
+        <li>Lead Generation</li>
+        <li>Negotiation &amp; Closing</li>
+        <li>Team Leadership</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <span class="panel-code">MOD.WEB</span>
+      <h3>Web Developer</h3>
+      <ul>
+        <li>Full-Stack Web Development (React, Node.js)</li>
+        <li>Business Management Platforms</li>
+        <li>AI Agent Development (Claude AI)</li>
+        <li>Zapier Workflow Automation</li>
+        <li>Calendar &amp; API Integration</li>
+        <li>Prompt Engineering</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <span class="panel-code">MOD.COMMS</span>
+      <h3>Communication</h3>
+      <ul>
+        <li>LinkedIn Content Strategy</li>
+        <li>Technical &amp; Business Writing</li>
+        <li>Client-Facing Presentation</li>
+        <li>Problem Solving</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="builds" class="wrap">
+  <div class="section-head">
+    <h2>Builds</h2>
+    <span class="section-tag mono">REV / DEPLOYED</span>
+  </div>
+
+  <div class="project-card flagship">
+    <span class="flagship-badge">IN PRODUCTION · LIVE</span>
+    <div class="project-head">
+      <div>
+        <h3>Msemakweli Wellness Platform</h3>
+        <span class="mono">End-to-end business management system</span>
+      </div>
+      <div class="tag-row">
+        <span class="tag">Full-Stack Web App</span>
+        <span class="tag">Admin Dashboard</span>
+        <span class="tag">Business Ops</span>
+      </div>
+    </div>
+    <p>
+      Not a side dashboard — the system Msemakweli Wellness actually runs on. Built solo as a web developer, it takes the business end to end: leads land from Instagram, move through a client funnel, convert into VVIP or Group memberships, and flow into product inventory and revenue reporting, all from a single admin view. It replaced a manual, spreadsheet-and-paper process with one live platform the team uses daily to track every client, payment, and follow-up.
+    </p>
+    <div class="project-stats">
+      <div><span class="n">326</span><span class="l">Total Leads Tracked</span></div>
+      <div><span class="n">100</span><span class="l">VVIP Clients Active</span></div>
+      <div><span class="n">311</span><span class="l">Group Clients Active</span></div>
+      <div><span class="n">22.5</span><span class="l">Product Stock Units</span></div>
+    </div>
+    <div class="project-mods">
+      <span><b>01</b> Client Funnel &amp; Lead Tracking</span>
+      <span><b>02</b> VVIP Client Management</span>
+      <span><b>03</b> Group Client Management</span>
+      <span><b>04</b> Product &amp; Inventory Tracking</span>
+      <span><b>05</b> Revenue Dashboard</span>
+      <span><b>06</b> Learning Hub</span>
+      <span><b>07</b> Users &amp; Permissions</span>
+      <span><b>08</b> Activity Log</span>
+      <span><b>09</b> Reminders &amp; Notifications</span>
+    </div>
+  </div>
+
+  <div class="project-card">
+    <div class="project-head">
+      <div>
+        <h3>REVOX</h3>
+        <span class="mono">Full-stack AI business agent</span>
+      </div>
+      <div class="tag-row">
+        <span class="tag">React / Vite</span>
+        <span class="tag">Node.js + Express</span>
+        <span class="tag">Claude AI</span>
+      </div>
+    </div>
+    <p>
+      An AI-powered business agent built from scratch to run Rev's own biomedical sales operation — deployed on Vercel and Render, with Google Calendar integration and automated weekly email reporting via Resend.
+    </p>
+    <div class="project-mods">
+      <span><b>01</b> Daily Brief</span>
+      <span><b>02</b> Analytics</span>
+      <span><b>03</b> Deal Closing Assistant</span>
+      <span><b>04</b> Deal Tracker</span>
+      <span><b>05</b> Clients</span>
+      <span><b>06</b> Contacts + WhatsApp</span>
+      <span><b>07</b> Reminders</span>
+      <span><b>08</b> Scaling Engine</span>
+      <span><b>09</b> Draft Assets</span>
+    </div>
+  </div>
+
+  <div class="project-card">
+    <div class="project-head">
+      <div>
+        <h3>Sales Workflow Automation</h3>
+        <span class="mono">Zapier + Gmail-triggered agent</span>
+      </div>
+      <div class="tag-row">
+        <span class="tag">Zapier</span>
+        <span class="tag">Gmail</span>
+        <span class="tag">Brand Intelligence</span>
+      </div>
+    </div>
+    <p>
+      A Gmail-triggered AI agent and a brand-intelligence research pipeline, adapted for the biomedical equipment industry to surface leads and market signal automatically.
+    </p>
+  </div>
+</section>
+
+<section id="education" class="wrap">
+  <div class="section-head">
+    <h2>Education &amp; Certifications</h2>
+    <span class="section-tag mono">REV / CREDENTIALS</span>
+  </div>
+  <div class="edu-list">
+    <div class="edu-row">
+      <div><div class="edu-name">Diploma in Biomedical Engineering</div><div class="edu-inst">Mbeya University of Science and Technology</div></div>
+      <div class="edu-year mono">2020 — 2023</div>
+    </div>
+    <div class="edu-row">
+      <div><div class="edu-name">Certificate of Sales and Customer Care</div><div class="edu-inst">Alison Online Course</div></div>
+      <div class="edu-year mono">2025</div>
+    </div>
+    <div class="edu-row">
+      <div><div class="edu-name">Diploma in Customer Service</div><div class="edu-inst">Alison Online Course</div></div>
+      <div class="edu-year mono">2026</div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact" class="wrap">
+  <div class="contact-panel">
+    <h2>Let's talk shop.</h2>
+    <p>Open to biomedical equipment sales opportunities, and to conversations about the AI systems behind the pipeline.</p>
+    <div class="contact-actions">
+      <a class="btn-primary" href="mailto:brevocatus0@gmail.com">brevocatus0@gmail.com</a>
+      <a class="btn-ghost" href="tel:+255764849601">+255 764 849 601</a>
+    </div>
+  </div>
+  <div class="foot-meta">
+    <span>© 2026 Revocatus Benedicto · Dar es Salaam, Tanzania</span>
+    <span>English — Professional · Swahili — Native</span>
+  </div>
+</footer>
+
+</body>
+</html>
